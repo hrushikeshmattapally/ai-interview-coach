@@ -34,7 +34,7 @@ export default function MCQQuiz() {
     setTime(0);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/generate-mcq", {
+      const res = await axios.post("https://ai-tools-hub-wj6j.onrender.com/api/generate-mcq", {
         topic,
         count,
       });

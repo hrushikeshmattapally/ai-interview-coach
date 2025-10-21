@@ -15,7 +15,7 @@ export default function StudyPlanner() {
     setPlan([]);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/study-plan", {
+      const res = await axios.post("https://ai-tools-hub-wj6j.onrender.com/api/study-plan", {
         skill,
         hoursPerDay: hours,
       });
