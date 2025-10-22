@@ -57,7 +57,7 @@ export default function Interview() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/chat", {
+      const res = await fetch("https://ai-tools-hub-wj6j.onrender.com/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: newMessages, role, company, mode }),
@@ -73,19 +73,19 @@ export default function Interview() {
           feedback: data.feedback || "",
         });
       } else {
-        // 🧩 Show feedback and next question
+        // 🧩 Handle regular AI response
         let aiReply = "";
-        if (mode === "immediate" && data.feedback) {
-          aiReply = `💬 Feedback: ${data.feedback}\n\n${data.question}`;
-        } else {
+
+        // Format feedback clearly if present
+        if (data.type === "feedback") {
+          aiReply = `💬 **Feedback:** ${data.feedback || "No feedback"}\n\n📘 **Next Question:** ${data.question}`;
+        } else if (data.question) {
           aiReply = data.question;
+        } else {
+          aiReply = "🤖 Unexpected response from AI.";
         }
 
-        setMessages((prev) => [
-          ...prev,
-          { role: "assistant", content: aiReply },
-        ]);
-
+        setMessages((prev) => [...prev, { role: "assistant", content: aiReply }]);
         if (typeof data.progress === "number") setProgress(data.progress);
         if (typeof data.score === "number") setScore(data.score);
       }
@@ -238,6 +238,7 @@ export default function Interview() {
           border-radius: 14px;
           margin-bottom: 8px;
           max-width: 80%;
+          white-space: pre-line;
           word-break: break-word;
         }
         .assistant {
