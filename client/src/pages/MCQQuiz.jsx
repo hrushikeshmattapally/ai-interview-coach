@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Header from "../components/Header"; // ✅ imported Header
+import Header from "../components/Header";
 
 export default function MCQQuiz() {
   const [topic, setTopic] = useState("");
@@ -49,7 +49,7 @@ export default function MCQQuiz() {
 
   // ✅ Handle Answer Selection
   const handleAnswer = (opt) => {
-    if (selected) return; // prevent multiple clicks
+    if (selected) return;
     setSelected(opt);
 
     const correctAnswer = questions[current].answer.trim().toLowerCase();
@@ -77,8 +77,8 @@ export default function MCQQuiz() {
   // 🌀 Loading state
   if (loading) {
     return (
-      <div className="h-screen flex flex-col items-center justify-center text-xl text-gray-700">
-        <Header /> {/* ✅ Keep Header visible even during loading */}
+      <div className="min-h-screen flex flex-col items-center justify-center text-xl text-gray-700">
+        <Header />
         Generating MCQs...
       </div>
     );
@@ -88,12 +88,12 @@ export default function MCQQuiz() {
   if (finished) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-green-400 to-blue-500 text-white p-6">
-        <Header /> {/* ✅ Header added */}
-        <h1 className="text-4xl font-bold mb-6">🎉 Quiz Completed!</h1>
-        <p className="text-xl mb-3">
+        <Header />
+        <h1 className="text-4xl font-bold mb-6 text-center">🎉 Quiz Completed!</h1>
+        <p className="text-xl mb-3 text-center">
           <strong>Score:</strong> {score} / {questions.length}
         </p>
-        <p className="text-lg mb-6">
+        <p className="text-lg mb-6 text-center">
           <strong>Time Taken:</strong> {Math.floor(time / 60)}m {time % 60}s
         </p>
         <button
@@ -110,12 +110,12 @@ export default function MCQQuiz() {
   if (questions.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-600 via-sky-500 to-cyan-400 flex flex-col items-center justify-center text-white p-6">
-        <Header /> {/* ✅ Header added here too */}
-        <h1 className="text-4xl font-extrabold mb-6 drop-shadow-md">
+        <Header />
+        <h1 className="text-4xl font-extrabold mb-6 drop-shadow-md text-center">
           🧠 AI MCQ Quiz Generator
         </h1>
 
-        <div className="bg-white/20 backdrop-blur-lg p-8 rounded-2xl shadow-lg w-full max-w-md text-center">
+        <div className="bg-white/20 backdrop-blur-lg p-6 sm:p-8 md:p-10 rounded-2xl shadow-lg w-full max-w-md text-center">
           <input
             type="text"
             placeholder="Enter topic (e.g. Computer Science)"
@@ -132,7 +132,7 @@ export default function MCQQuiz() {
           />
           <button
             onClick={handleGenerate}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-semibold"
+            className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-semibold"
           >
             Generate MCQs
           </button>
@@ -146,20 +146,19 @@ export default function MCQQuiz() {
   const normalizedAnswer = q.answer?.trim().toLowerCase();
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-600 via-blue-500 to-purple-500 text-white p-6">
-      <Header /> {/* ✅ Header visible during quiz */}
-      <div className="bg-white/20 backdrop-blur-md rounded-2xl p-8 shadow-lg w-full max-w-2xl text-center mt-16">
-        <h2 className="text-2xl font-bold mb-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-600 via-blue-500 to-purple-500 text-white p-4 sm:p-6 md:p-8">
+      <Header />
+      <div className="bg-white/20 backdrop-blur-md rounded-2xl p-6 sm:p-8 md:p-10 shadow-lg w-full max-w-2xl text-center mt-16">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-4">
           Question {current + 1} of {questions.length}
         </h2>
-        <p className="text-lg mb-6">{q.question}</p>
+        <p className="text-base sm:text-lg mb-6">{q.question}</p>
 
         <div className="space-y-3">
           {q.options.map((opt, idx) => {
             const isSelected = selected === opt;
             const isCorrect = opt.trim().toLowerCase() === normalizedAnswer;
-            const showGreen =
-              selected && (isCorrect || (isSelected && isCorrect));
+            const showGreen = selected && (isCorrect || (isSelected && isCorrect));
             const showRed = selected && isSelected && !isCorrect;
 
             return (
@@ -168,13 +167,13 @@ export default function MCQQuiz() {
                 onClick={() => handleAnswer(opt)}
                 disabled={!!selected}
                 className={`block w-full text-left px-4 py-3 rounded-lg border transition
-                ${
-                  showGreen
-                    ? "bg-green-500 text-white border-green-400"
-                    : showRed
-                    ? "bg-red-500 text-white border-red-400"
-                    : "bg-white text-gray-900 hover:bg-blue-100"
-                }`}
+                  ${
+                    showGreen
+                      ? "bg-green-500 text-white border-green-400"
+                      : showRed
+                      ? "bg-red-500 text-white border-red-400"
+                      : "bg-white text-gray-900 hover:bg-blue-100"
+                  }`}
               >
                 {opt}
               </button>
@@ -182,11 +181,9 @@ export default function MCQQuiz() {
           })}
         </div>
 
-        {feedback && (
-          <p className="mt-4 text-lg font-semibold">{feedback}</p>
-        )}
+        {feedback && <p className="mt-4 text-lg font-semibold">{feedback}</p>}
 
-        <p className="mt-6 text-sm text-gray-200">
+        <p className="mt-6 text-sm sm:text-base text-gray-200">
           ⏱️ Time: {Math.floor(time / 60)}m {time % 60}s | ✅ Score: {score}
         </p>
       </div>

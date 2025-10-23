@@ -22,44 +22,44 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-600 via-sky-500 to-cyan-400 text-white relative">
-      
-      {/* ✅ Header Component */}
       <Header />
 
-      {/* ✅ Home Button (Top Right) */}
+      {/* Home Button */}
       <button
         onClick={goHome}
-        className="absolute top-6 right-6 bg-white/20 text-white px-5 py-2 rounded-full border border-white/40 backdrop-blur-md hover:bg-white/30 transition"
+        className="absolute top-6 right-6 bg-white/20 text-white px-4 sm:px-5 py-2 rounded-full border border-white/40 backdrop-blur-md hover:bg-white/30 transition text-sm sm:text-base"
       >
         🏠 Home
       </button>
 
-      {/* ✅ Main Content */}
-      <div className="flex-grow flex flex-col justify-center items-center p-6 sm:p-8 lg:p-12">
-        <div className="w-full max-w-6xl bg-white/20 backdrop-blur-lg rounded-3xl shadow-2xl p-6 sm:p-10 md:p-12 flex flex-col md:flex-row items-center justify-between gap-10 border border-white/30">
+      {/* Main Content */}
+      <div className="flex-grow flex flex-col justify-center items-center p-4 sm:p-8 lg:p-12">
+        <div className="w-full max-w-6xl bg-white/20 backdrop-blur-lg rounded-3xl shadow-2xl p-6 sm:p-10 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-10 border border-white/30">
           
           {/* Left Section */}
           <div className="flex-1 text-center md:text-left">
-            <h1 className="text-5xl font-extrabold mb-4 text-white drop-shadow-md">
+            <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 text-white drop-shadow-md">
               🎯 AI Interview Coach
             </h1>
-            <p className="text-gray-100 text-lg leading-relaxed max-w-xl mx-auto md:mx-0 drop-shadow-sm">
+            <p className="text-gray-100 text-base sm:text-lg leading-relaxed max-w-xl mx-auto md:mx-0 drop-shadow-sm">
               Prepare for your dream job with{" "}
-              <span className="font-semibold text-yellow-200">AI-powered mock interviews</span>.  
+              <span className="font-semibold text-yellow-200">
+                AI-powered mock interviews
+              </span>.  
               Get a structured, section-based interview with progress tracking and instant feedback.
             </p>
           </div>
 
           {/* Right Section - Form */}
-          <div className="flex-1 w-full max-w-md bg-white rounded-2xl shadow-xl p-8 text-center text-gray-800">
-            <h2 className="text-2xl font-bold mb-6 text-blue-700">Get Started</h2>
+          <div className="flex-1 w-full max-w-md bg-white rounded-2xl shadow-xl p-6 sm:p-8 text-center text-gray-800">
+            <h2 className="text-2xl font-bold mb-4 text-blue-700">Get Started</h2>
 
             <input
               type="text"
               placeholder="Job Role (e.g. Frontend Developer)"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full px-4 py-3 mb-3 rounded-lg border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none"
+              className="w-full px-4 py-3 mb-3 rounded-lg border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none text-sm sm:text-base"
             />
 
             <input
@@ -67,13 +67,13 @@ export default function Home() {
               placeholder="Company (optional)"
               value={company}
               onChange={(e) => setCompany(e.target.value)}
-              className="w-full px-4 py-3 mb-3 rounded-lg border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none"
+              className="w-full px-4 py-3 mb-3 rounded-lg border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none text-sm sm:text-base"
             />
 
             <select
               value={mode}
               onChange={(e) => setMode(e.target.value)}
-              className="w-full px-4 py-3 mb-6 rounded-lg border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none"
+              className="w-full px-4 py-3 mb-6 rounded-lg border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-blue-400 outline-none text-sm sm:text-base"
             >
               <option value="immediate">Correct after each answer</option>
               <option value="later">Correct at the end</option>
@@ -81,7 +81,7 @@ export default function Home() {
 
             <button
               onClick={startInterview}
-              className="w-full py-3 rounded-lg font-semibold bg-blue-600 text-white hover:bg-blue-700 transition duration-200 shadow-md"
+              className="w-full py-3 rounded-lg font-semibold bg-blue-600 text-white hover:bg-blue-700 transition duration-200 shadow-md text-sm sm:text-base"
             >
               Start Interview
             </button>

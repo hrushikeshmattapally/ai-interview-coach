@@ -28,13 +28,15 @@ export default function Interview() {
   const startInterview = async () => {
     setLoading(true);
     try {
-      const res = await fetch("https://ai-tools-hub-wj6j.onrender.com/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: [], role, company, mode }),
-      });
+      const res = await fetch(
+        "https://ai-tools-hub-wj6j.onrender.com/api/chat",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: [], role, company, mode }),
+        }
+      );
       const data = await res.json();
-
       if (data.question) {
         setMessages([{ role: "assistant", content: data.question }]);
         setProgress(data.progress || 0);
@@ -57,26 +59,25 @@ export default function Interview() {
     setLoading(true);
 
     try {
-      const res = await fetch("https://ai-tools-hub-wj6j.onrender.com/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages, role, company, mode }),
-      });
+      const res = await fetch(
+        "https://ai-tools-hub-wj6j.onrender.com/api/chat",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: newMessages, role, company, mode }),
+        }
+      );
 
       const data = await res.json();
 
       if (data.type === "final") {
-        // 🎯 End interview
         setInterviewEnded(true);
         setFinalSummary({
           score: data.score || 0,
           feedback: data.feedback || "",
         });
       } else {
-        // 🧩 Handle regular AI response
         let aiReply = "";
-
-        // Format feedback clearly if present
         if (data.type === "feedback") {
           aiReply = `💬 **Feedback:** ${data.feedback || "No feedback"}\n\n📘 **Next Question:** ${data.question}`;
         } else if (data.question) {
@@ -110,80 +111,83 @@ export default function Interview() {
   };
 
   return (
-    <div className="interview-container">
+    <div className="interview-container p-2 sm:p-4 md:p-6">
       {!interviewEnded ? (
-        <div className="chat-box">
-          <h2>🎯 AI Interview Coach</h2>
-          <p>
+        <div className="chat-box w-full max-w-3xl mx-auto flex flex-col bg-white/10 backdrop-blur-lg rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 h-[90vh]">
+          <h2 className="text-xl sm:text-2xl font-bold mb-2 text-center sm:text-left">🎯 AI Interview Coach</h2>
+          <p className="text-sm sm:text-base mb-2">
             Role: {role || "N/A"} {company && `| Company: ${company}`}
           </p>
 
           {/* Progress Bar */}
-          <div className="progress-bar">
-            <div className="progress" style={{ width: `${progress}%` }}></div>
+          <div className="progress-bar h-2 bg-white/20 rounded-full mb-2">
+            <div className="progress h-2 bg-green-400 rounded-full transition-all" style={{ width: `${progress}%` }}></div>
           </div>
 
-          {/* Chat Section */}
-          <div className="messages">
+          {/* Messages */}
+          <div className="messages flex-1 overflow-y-auto mb-2 p-2 bg-white/10 rounded-md">
             {messages.map((msg, i) => (
               <div
                 key={i}
-                className={`message ${msg.role === "user" ? "user" : "assistant"}`}
+                className={`message p-2 my-1 rounded-md max-w-[80%] break-words ${
+                  msg.role === "user" ? "bg-white text-gray-900 self-end" : "bg-blue-600 text-white self-start"
+                }`}
               >
                 {msg.content}
               </div>
             ))}
-            {loading && <div className="thinking">🤔 AI is thinking...</div>}
-            <div ref={chatEndRef} />
+            {loading && <div className="thinking text-gray-200">🤔 AI is thinking...</div>}
+            <div ref={chatEndRef}></div>
           </div>
 
-          {/* Input Area */}
-          <div className="input-area">
+          {/* Input */}
+          <div className="input-area flex gap-2 sm:gap-3">
             <input
               type="text"
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
               placeholder="Type your answer..."
               disabled={loading}
+              className="flex-1 p-2 sm:p-3 rounded-md bg-white/20 text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-            <button onClick={handleSend} disabled={loading}>
+            <button
+              onClick={handleSend}
+              disabled={loading}
+              className="px-4 sm:px-6 py-2 sm:py-3 bg-white text-blue-600 font-semibold rounded-md hover:bg-gray-100 transition"
+            >
               {loading ? "Thinking..." : "Send"}
             </button>
           </div>
         </div>
       ) : (
-        // ✅ Final Scorecard
-        <div className="result-screen">
-          <div className="result-box">
-            <h1 className="text-3xl font-bold mb-3 text-white">
-              🏁 Interview Completed
-            </h1>
-            <p className="text-xl text-gray-100 mb-4">
-              Role: <strong>{role}</strong>
-              {company && ` | Company: ${company}`}
+        <div className="result-screen flex flex-col items-center justify-center p-4 min-h-screen">
+          <div className="result-box bg-black/50 p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-xl text-center">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-white">🏁 Interview Completed</h1>
+            <p className="text-gray-200 mb-4 text-sm sm:text-base">
+              Role: <strong>{role}</strong> {company && `| Company: ${company}`}
             </p>
 
-            <div className="score-display">
-              <h2 className="text-5xl font-bold text-green-400 mb-2">
-                {finalSummary?.score ?? score} / 10
-              </h2>
-              <p className="text-gray-200 text-lg">Final Score</p>
+            <div className="score-display bg-white/10 rounded-lg p-4 mb-4">
+              <h2 className="text-3xl sm:text-4xl font-bold text-green-400">{finalSummary?.score ?? score} / 10</h2>
+              <p className="text-gray-200 text-sm sm:text-base">Final Score</p>
             </div>
 
-            <div className="summary">
-              <h3 className="text-xl font-semibold mb-2 text-yellow-300">
-                Feedback Summary:
-              </h3>
-              <p className="text-gray-100 whitespace-pre-line">
-                {finalSummary?.feedback || "No feedback available."}
-              </p>
+            <div className="summary text-left bg-white/10 p-3 rounded-md mb-4">
+              <h3 className="text-yellow-300 font-semibold text-base sm:text-lg">Feedback Summary:</h3>
+              <p className="text-gray-100 text-sm sm:text-base whitespace-pre-line">{finalSummary?.feedback || "No feedback available."}</p>
             </div>
 
-            <div className="result-buttons">
-              <button onClick={restartInterview} className="retry-btn">
+            <div className="result-buttons flex flex-col sm:flex-row gap-3 justify-center">
+              <button
+                onClick={restartInterview}
+                className="retry-btn bg-green-500 hover:bg-green-600 text-white px-4 sm:px-6 py-2 rounded-md font-semibold"
+              >
                 🔁 Restart Interview
               </button>
-              <button onClick={() => navigate("/")} className="home-btn">
+              <button
+                onClick={() => navigate("/")}
+                className="home-btn bg-blue-400 hover:bg-blue-500 text-white px-4 sm:px-6 py-2 rounded-md font-semibold"
+              >
                 🏠 Back to Home
               </button>
             </div>
@@ -192,138 +196,8 @@ export default function Interview() {
       )}
 
       <style>{`
-        .interview-container {
-          min-height: 100vh;
-          width: 100%;
-          background: linear-gradient(135deg, #00b4d8, #007bff);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          padding: 10px;
-          color: #fff;
-        }
-        .chat-box {
-          width: 100%;
-          max-width: 800px;
-          background: rgba(255, 255, 255, 0.15);
-          backdrop-filter: blur(12px);
-          border-radius: 20px;
-          padding: 20px;
-          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-          display: flex;
-          flex-direction: column;
-          height: 90vh;
-        }
-        .progress-bar {
-          height: 10px;
-          background: rgba(255,255,255,0.2);
-          border-radius: 5px;
-          margin: 10px 0;
-          overflow: hidden;
-        }
-        .progress {
-          height: 100%;
-          background: #00ffcc;
-          transition: width 0.4s ease;
-        }
-        .messages {
-          flex: 1;
-          overflow-y: auto;
-          padding: 10px;
-          background: rgba(255,255,255,0.1);
-          border-radius: 10px;
-        }
-        .message {
-          padding: 10px 14px;
-          border-radius: 14px;
-          margin-bottom: 8px;
-          max-width: 80%;
-          white-space: pre-line;
-          word-break: break-word;
-        }
-        .assistant {
-          background-color: #007bff;
-          color: white;
-          align-self: flex-start;
-        }
-        .user {
-          background-color: white;
-          color: #333;
-          align-self: flex-end;
-        }
-        .input-area {
-          display: flex;
-          gap: 10px;
-          margin-top: 10px;
-        }
-        .input-area input {
-          flex: 1;
-          padding: 10px;
-          border-radius: 8px;
-          border: none;
-          outline: none;
-          color: #fff;
-          background: rgba(255,255,255,0.2);
-        }
-        .input-area button {
-          padding: 10px 16px;
-          border-radius: 8px;
-          border: none;
-          background-color: #ffffff;
-          color: #007bff;
-          font-weight: bold;
-          cursor: pointer;
-        }
-        .result-screen {
-          text-align: center;
-          padding: 20px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          min-height: 100vh;
-        }
-        .result-box {
-          background: rgba(0, 0, 0, 0.5);
-          padding: 40px;
-          border-radius: 20px;
-          max-width: 700px;
-          width: 100%;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-        .score-display {
-          background: rgba(255,255,255,0.1);
-          border-radius: 16px;
-          padding: 20px;
-          margin: 20px 0;
-        }
-        .retry-btn, .home-btn {
-          padding: 10px 18px;
-          border-radius: 10px;
-          font-weight: bold;
-          border: none;
-          cursor: pointer;
-          transition: 0.3s;
-        }
-        .retry-btn {
-          background: #4ade80;
-          color: #064e3b;
-        }
-        .retry-btn:hover {
-          background: #22c55e;
-        }
-        .home-btn {
-          background: #93c5fd;
-          color: #1e3a8a;
-        }
-        .home-btn:hover {
-          background: #60a5fa;
-        }
-        .summary {
-          text-align: left;
-          background: rgba(255,255,255,0.1);
-          padding: 15px;
-          border-radius: 10px;
-        }
+        .progress-bar { overflow:hidden; }
+        .progress { transition: width 0.4s ease; }
       `}</style>
     </div>
   );
